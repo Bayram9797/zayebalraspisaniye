@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Расписание · Химия 2023 (ХОС)</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--tx:#161a2b;--mu:#6b7390;--bd:#e4e8f2;--ac:#4f46e5;--lec:#4f46e5;--lab:#0d9488;--prc:#ea580c;--sh:0 2px 12px rgba(30,40,90,.07)}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1220;--card:#181c30;--tx:#eef0fa;--mu:#9199b8;--bd:#272c47;--ac:#818cf8;--lec:#818cf8;--lab:#2dd4bf;--prc:#fb923c;--sh:none}}
+*{box-sizing:border-box;margin:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;padding:env(safe-area-inset-top) 0 40px}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px}
+header{padding:22px 0 12px}
+h1{font-size:24px;letter-spacing:-.02em}
+.sub{color:var(--mu);font-size:14px;margin-top:4px}
+.bar{display:flex;gap:8px;margin:14px 0 6px;align-items:center}
+.seg{display:flex;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:3px}
+.seg button{border:0;background:none;color:var(--mu);font:600 13px system-ui,sans-serif;padding:7px 14px;border-radius:9px;cursor:pointer}
+.seg button.on{background:var(--ac);color:#fff}
+.days{display:flex;gap:8px;overflow-x:auto;padding:8px 0 12px;scrollbar-width:none}
+.days::-webkit-scrollbar{display:none}
+.d{flex:1 0 54px;background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:9px 4px;text-align:center;cursor:pointer;font-family:inherit;color:var(--tx)}
+.d b{display:block;font-size:12px;color:var(--mu);font-weight:600;text-transform:uppercase}
+.d span{display:block;font-size:20px;font-weight:700;margin:2px 0}
+.d i{display:block;font-style:normal;font-size:11px;color:var(--mu)}
+.d.today b{color:var(--ac)}
+.d.on{background:var(--ac);border-color:var(--ac);color:#fff}
+.d.on b,.d.on i{color:#ffffffcc}
+.dh{font-size:15px;font-weight:700;margin:14px 2px 10px;display:flex;justify-content:space-between;align-items:baseline}
+.dh small{color:var(--mu);font-weight:500;font-size:13px}
+.card{display:flex;gap:12px;background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:14px;margin-bottom:10px;box-shadow:var(--sh);position:relative;border-left:5px solid var(--c)}
+.card.lec{--c:var(--lec)}.card.lab{--c:var(--lab)}.card.prc{--c:var(--prc)}
+.card.now{outline:2px solid var(--c);outline-offset:1px}
+.tm{min-width:58px;font-variant-numeric:tabular-nums}
+.tm b{display:block;font-size:16px}.tm span{font-size:12px;color:var(--mu)}
+.nm{font-weight:650;font-size:15.5px;line-height:1.3}
+.mt{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:7px;font-size:13px;color:var(--mu)}
+.tag{display:inline-block;font-size:11px;font-weight:700;color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);padding:2px 8px;border-radius:99px;margin-bottom:6px}
+.badge{position:absolute;top:10px;right:12px;font-size:11px;font-weight:700;color:#fff;background:#e11d48;padding:2px 8px;border-radius:99px}
+.gap{text-align:center;color:var(--mu);font-size:12.5px;margin:-2px 0 10px}
+.empty{text-align:center;color:var(--mu);padding:50px 10px;background:var(--card);border:1px dashed var(--bd);border-radius:16px}
+.empty big{display:block;font-size:34px;margin-bottom:8px}
+.next{background:linear-gradient(135deg,var(--ac),#7c3aed);color:#fff;border-radius:16px;padding:14px 16px;margin:6px 0 4px;font-size:14px}
+.next b{display:block;font-size:16px;margin-top:2px}
+footer{color:var(--mu);font-size:12px;text-align:center;margin-top:26px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Химия 2023 · ХОС</h1>
+  <div class="sub" id="range"></div>
+  <div class="bar"><div class="seg"><button id="bDay" class="on">День</button><button id="bWeek">Неделя</button></div></div>
+</header>
+<div class="days" id="days"></div>
+<div id="next"></div>
+<div id="list"></div>
+<footer>Расписание только для группы ХИМИЯ_ХОС2023</footer>
+</div>
+<script>
+// Каждая запись: [номер пары, начало, конец, предмет, тип, преподаватель, аудитория]
+// Чтобы добавить новую неделю — скопируйте объект и поменяйте даты/пары.
+const WEEKS=[{title:"19–24 октября 2026",days:[
+{date:"2026-10-19",lessons:[[3,"11:40","13:00","Физическая химия","Лекция","Бадмаев Ч. М.","4 корпус, 333"],[4,"13:10","14:30","Спектральные методы анализа","Лаб. работа","Менкенова Л. И.","4 корпус, 329"],[5,"14:40","16:00","Спектральные методы анализа","Лаб. работа","Менкенова Л. И.","4 корпус, 329"]]},
+{date:"2026-10-20",lessons:[[1,"08:30","09:50","Физическая химия","Лекция","Бадмаев Ч. М.","4 корпус, 333"],[2,"10:00","11:20","Техника и методика химического эксперимента","Лекция","Васильева П. Д.","4 корпус, 320"]]},
+{date:"2026-10-21",lessons:[[2,"10:00","11:20","Утилизация отходов производства","Лекция","Джабруева Л. В.","4 корпус, 325"],[3,"11:40","13:00","Большой практикум «Физико-химические методы анализа»","Лаб. работа","Сохорова З. В.","4 корпус, 329"],[4,"13:10","14:30","Большой практикум «Физико-химические методы анализа»","Лаб. работа","Сохорова З. В.","4 корпус, 329"]]},
+{date:"2026-10-22",lessons:[[1,"08:30","09:50","Высокомолекулярные соединения","Лекция","Сохорова З. В.","4 корпус, 224"],[2,"10:00","11:20","Физическая химия","Лаб. работа","Слизская С. А.","4 корпус, 325"],[3,"11:40","13:00","Физическая химия","Лаб. работа","Слизская С. А.","4 корпус, 325"],[4,"13:10","14:30","Физическая химия","Лаб. работа","Слизская С. А.","4 корпус, 325"]]},
+{date:"2026-10-23",lessons:[[1,"08:30","09:50","Спектральные методы анализа","Лекция","Сохорова З. В.","4 корпус, 325"],[2,"10:00","11:20","Физическая химия","Практика","Бадмаев Ч. М.","4 корпус, 329"],[3,"11:40","13:00","Техника и методика химического эксперимента","Лаб. работа","Васильева П. Д.","4 корпус, 320"]]},
+{date:"2026-10-24",lessons:[]}
+]}];
+
+const DN=["Вс","Пн","Вт","Ср","Чт","Пт","Сб"],DF=["воскресенье","понедельник","вторник","среда","четверг","пятница","суббота"],MN=["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];
+const cls={"Лекция":"lec","Лаб. работа":"lab","Практика":"prc"};
+const $=id=>document.getElementById(id);
+const toD=s=>new Date(s+"T00:00:00");
+const mins=t=>{const[a,b]=t.split(":");return+a*60+ +b};
+const now=new Date(),iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const todayIso=iso(now),nowM=now.getHours()*60+now.getMinutes();
+
+// объединяем подряд идущие одинаковые пары в один блок
+function merge(ls){const o=[];for(const l of ls){const p=o[o.length-1];
+ if(p&&p.n===l[3]&&p.t===l[4]&&p.r===l[6]&&p.last+1===l[0]){p.end=l[2];p.last=l[0];p.cnt++}
+ else o.push({n:l[3],t:l[4],r:l[6],p:l[5],start:l[1],end:l[2],first:l[0],last:l[0],cnt:1})}return o}
+
+const W=WEEKS[0];let sel=W.days.findIndex(d=>d.date===todayIso);if(sel<0)sel=Math.max(0,W.days.findIndex(d=>d.lessons.length));
+let mode="day";
+$("range").textContent=W.title+" · все пары по расписанию";
+
+function pairWord(n){return n===1?"1 пара":n<5?n+" пары":n+" пар"}
+function card(b,isToday){
+ const live=isToday&&nowM>=mins(b.start)&&nowM<mins(b.end);
+ return `<div class="card ${cls[b.t]||""}${live?" now":""}">
+ <div class="tm"><b>${b.start}</b><span>${b.end}</span></div>
+ <div style="flex:1;min-width:0"><span class="tag">${b.t}${b.cnt>1?" · "+b.cnt+" пары подряд":""}</span>
+ <div class="nm">${b.n}</div>
+ <div class="mt"><span>👤 ${b.p}</span><span>📍 ${b.r}</span></div></div>${live?'<span class="badge">СЕЙЧАС</span>':""}</div>`}
+
+function dayHtml(d,withHead){
+ const dt=toD(d.date),isT=d.date===todayIso,bl=merge(d.lessons);
+ let h=withHead?`<div class="dh"><span>${DF[dt.getDay()][0].toUpperCase()+DF[dt.getDay()].slice(1)}, ${dt.getDate()} ${MN[dt.getMonth()]}</span><small>${d.lessons.length?pairWord(d.lessons.length):""}</small></div>`:"";
+ if(!bl.length)return h+`<div class="empty"><big>🎉</big>Пар нет — отдыхаем</div>`;
+ bl.forEach((b,i)=>{
+  if(i){const g=b.first-bl[i-1].last-1;if(g>0)h+=`<div class="gap">☕ окно · ${g} ${g===1?"пара":"пары"}</div>`}
+  h+=card(b,isT)});
+ return h}
+
+function render(){
+ $("days").innerHTML=W.days.map((d,i)=>{const dt=toD(d.date);
+  return `<button class="d${i===sel&&mode==="day"?" on":""}${d.date===todayIso?" today":""}" data-i="${i}"><b>${DN[dt.getDay()]}</b><span>${dt.getDate()}</span><i>${d.lessons.length?pairWord(d.lessons.length):"—"}</i></button>`}).join("");
+ $("days").querySelectorAll(".d").forEach(e=>e.onclick=()=>{sel=+e.dataset.i;mode="day";render()});
+ $("bDay").className=mode==="day"?"on":"";$("bWeek").className=mode==="week"?"on":"";
+ // что дальше
+ let nx="";const td=W.days.find(d=>d.date===todayIso);
+ if(td&&mode==="day"&&sel===W.days.indexOf(td)){const n=merge(td.lessons).find(b=>mins(b.start)>nowM);
+  if(n&&!merge(td.lessons).some(b=>nowM>=mins(b.start)&&nowM<mins(b.end)))nx=`<div class="next">Следующая пара · ${n.start}<b>${n.n}</b>${n.r}</div>`}
+ $("next").innerHTML=nx;
+ $("list").innerHTML=mode==="day"?dayHtml(W.days[sel],true):W.days.map(d=>dayHtml(d,true)).join("");
+}
+$("bDay").onclick=()=>{mode="day";render()};
+$("bWeek").onclick=()=>{mode="week";render()};
+render();
+</script>
+</body>
+</html>
